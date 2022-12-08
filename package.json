@@ -1,0 +1,44 @@
+{
+  "name": "vite-plugin-vue-i18n",
+  "type": "module",
+  "source": "./src/index.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle --target node",
+    "dev": "microbundle watch --target node"
+  },
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "microbundle": "^0.15.1",
+    "prettier": "^2.8.1",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "husky": "^8.0.2",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "glob-promise": "^5.0.0",
+    "minimatch": "^5.1.1",
+    "picocolors": "^1.0.0",
+    "vite": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{ts}": "eslint --cache --fix"
+  },
+  "engines": {
+    "node": ">= 14.16"
+  },
+  "keywords": [
+    "i18n",
+    "plugin",
+    "vite-plugin",
+    "vite",
+    "vue-i18n"
+  ]
+}
