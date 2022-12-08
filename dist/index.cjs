@@ -25,7 +25,7 @@ function vueI18n({ resourcesPattern, output }) {
       }
     },
     handleHotUpdate: async (ctx) => {
-      const localesPattern = path.resolve(process.cwd(), resourcesPattern);
+      const localesPattern = path.resolve(process.cwd(), `./src/${resourcesPattern}`);
       const isMatch = minimatch(ctx.file, localesPattern);
       if (isMatch) {
         try {
