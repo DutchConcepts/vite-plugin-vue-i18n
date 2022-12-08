@@ -8,24 +8,32 @@ import pc from 'picocolors';
 
 import { logError, logSuccess } from '@/utils';
 
+/**
+ * The options object of the plugin.
+ * * `ResourcesPattern` should be an {@link https://github.com/isaacs/minimatch minimatch} pattern.
+ * * `output` should be a path ending with a filename starting from the `src` folder of your project. The path of the example below would be `./src/i18n/locales/index.ts`. The generated file will always be an TypeScript file and thus ending with the `.ts` extension.
+ * @example
+ * {
+ *  resourcesPattern: 'i18n/locales/**\/**.json',
+ *  output: 'i18n/locales/index'
+ * }
+ */
 interface IOptions {
-  // @example 'i18n/locales/**/*.json'
   resourcesPattern: string;
-  // @example 'i18n/locales/index.ts'
-  outputPath: string;
+  output: string;
 }
 
 /**
  * @param options
  * @returns Plugin
  */
-function vueI18n({ resourcesPattern, outputPath }: IOptions): Plugin {
+function vueI18n({ resourcesPattern, output }: IOptions): Plugin {
   return {
     name: 'vite-plugin-vue-i18n',
 
     buildStart: async () => {
       try {
-        await compileLocaleFile({ resourcesPattern, outputPath });
+        await compileLocaleFile({ resourcesPattern, output });
       } catch (e) {
         logError('Building resources on start went wrong...', e);
       }
@@ -37,7 +45,7 @@ function vueI18n({ resourcesPattern, outputPath }: IOptions): Plugin {
 
       if (isMatch) {
         try {
-          await compileLocaleFile({ resourcesPattern, outputPath });
+          await compileLocaleFile({ resourcesPattern, output });
         } catch (e) {
           logError('Building resources on hot reload went wrong...', e);
         }
@@ -46,7 +54,7 @@ function vueI18n({ resourcesPattern, outputPath }: IOptions): Plugin {
   };
 }
 
-async function compileLocaleFile({ resourcesPattern, outputPath }: IOptions) {
+async function compileLocaleFile({ resourcesPattern, output }: IOptions) {
   const files = await glob(`./src/${resourcesPattern}`);
 
   const messages: Record<'nl-NL' | 'en-GB', { [k: string]: unknown }> = {
@@ -71,7 +79,7 @@ async function compileLocaleFile({ resourcesPattern, outputPath }: IOptions) {
   const jsonData = JSON.stringify(messages);
   const codeStr = `// THIS FILE IS GENERATED, DO NOT EDIT!\nconst messages = ${jsonData};\ntype Messages = typeof messages;\n export { messages, type Messages };`;
 
-  writeFileSync(`./src/${outputPath}.ts`, codeStr);
+  writeFileSync(`./src/${output}.ts`, codeStr);
 
   logSuccess('Generated vue-i18n locales!', pc.green('✔'));
 }

@@ -22,7 +22,7 @@
    */
   function vueI18n({
     resourcesPattern,
-    outputPath
+    output
   }) {
     return {
       name: 'vite-plugin-vue-i18n',
@@ -30,7 +30,7 @@
         try {
           await compileLocaleFile({
             resourcesPattern,
-            outputPath
+            output
           });
         } catch (e) {
           logError('Building resources on start went wrong...', e);
@@ -43,7 +43,7 @@
           try {
             await compileLocaleFile({
               resourcesPattern,
-              outputPath
+              output
             });
           } catch (e) {
             logError('Building resources on hot reload went wrong...', e);
@@ -54,7 +54,7 @@
   }
   async function compileLocaleFile({
     resourcesPattern,
-    outputPath
+    output
   }) {
     const files = await globPromise.promise(`./src/${resourcesPattern}`);
     const messages = {
@@ -76,7 +76,7 @@
     }
     const jsonData = JSON.stringify(messages);
     const codeStr = `// THIS FILE IS GENERATED, DO NOT EDIT!\nconst messages = ${jsonData};\ntype Messages = typeof messages;\n export { messages, type Messages };`;
-    fs.writeFileSync(`./src/${outputPath}.ts`, codeStr);
+    fs.writeFileSync(`./src/${output}.ts`, codeStr);
     logSuccess('Generated vue-i18n locales!', pc__default["default"].green('✔'));
   }
 
