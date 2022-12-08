@@ -40,7 +40,7 @@ function vueI18n({ resourcesPattern, output }: IOptions): Plugin {
     },
 
     handleHotUpdate: async (ctx: HmrContext) => {
-      const localesPattern = path.resolve(cwd(), resourcesPattern);
+      const localesPattern = path.resolve(cwd(), `./src/${resourcesPattern}`);
       const isMatch = minimatch(ctx.file, localesPattern);
 
       if (isMatch) {
