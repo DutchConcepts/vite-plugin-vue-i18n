@@ -77,4 +77,4 @@ async function compileLocaleFile({
 }
 
 export { vueI18n };
-//# sourceMappingURL=index.modern.js.map
+//# sourceMappingURL=index.js.map
