@@ -6,7 +6,7 @@ import minimatch from 'minimatch';
 import path from 'path';
 import pc from 'picocolors';
 
-import { logError, logSuccess } from '@/utils';
+import { logError, logSuccess } from './utils';
 
 /**
  * The options object of the plugin.

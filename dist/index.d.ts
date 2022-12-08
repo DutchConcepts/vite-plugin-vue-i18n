@@ -1,4 +1,5 @@
-import { type Plugin } from 'vite';
+import { Plugin } from 'vite';
+
 /**
  * The options object of the plugin.
  * * `ResourcesPattern` should be an {@link https://github.com/isaacs/minimatch minimatch} pattern.
@@ -18,4 +19,5 @@ interface IOptions {
  * @returns Plugin
  */
 declare function vueI18n({ resourcesPattern, output }: IOptions): Plugin;
+
 export { vueI18n };

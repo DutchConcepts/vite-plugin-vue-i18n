@@ -1,11 +1,9 @@
-'use strict';
-
-const fs = require('fs');
-const globPromise = require('glob-promise');
-const process = require('process');
-const minimatch = require('minimatch');
-const path = require('path');
-const pc = require('picocolors');
+import { readFileSync, writeFileSync } from 'fs';
+import { promise } from 'glob-promise';
+import { cwd } from 'process';
+import minimatch from 'minimatch';
+import path from 'path';
+import pc from 'picocolors';
 
 function logSuccess(...args) {
   console.log(pc.green(pc.bold(`[vite-plugin-vue-i18n] `)), ...args);
@@ -25,7 +23,7 @@ function vueI18n({ resourcesPattern, output }) {
       }
     },
     handleHotUpdate: async (ctx) => {
-      const localesPattern = path.resolve(process.cwd(), resourcesPattern);
+      const localesPattern = path.resolve(cwd(), resourcesPattern);
       const isMatch = minimatch(ctx.file, localesPattern);
       if (isMatch) {
         try {
@@ -38,13 +36,13 @@ function vueI18n({ resourcesPattern, output }) {
   };
 }
 async function compileLocaleFile({ resourcesPattern, output }) {
-  const files = await globPromise.promise(`./src/${resourcesPattern}`);
+  const files = await promise(`./src/${resourcesPattern}`);
   const messages = {
     "nl-NL": {},
     "en-GB": {}
   };
   for (const path2 of files) {
-    const buffer = fs.readFileSync(path2, { encoding: "utf-8" });
+    const buffer = readFileSync(path2, { encoding: "utf-8" });
     const json = JSON.parse(buffer);
     const parts = path2.split("/");
     const lang = parts[4];
@@ -59,8 +57,8 @@ async function compileLocaleFile({ resourcesPattern, output }) {
 const messages = ${jsonData};
 type Messages = typeof messages;
  export { messages, type Messages };`;
-  fs.writeFileSync(`./src/${output}.ts`, codeStr);
+  writeFileSync(`./src/${output}.ts`, codeStr);
   logSuccess("Generated vue-i18n locales!", pc.green("\u2714"));
 }
 
-exports.vueI18n = vueI18n;
+export { vueI18n };
